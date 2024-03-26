@@ -6,44 +6,66 @@
 #include <iostream>
 #include <string>
 #include "SFML/Graphics.hpp"
-// TODO: Fix issue with gap_end not resizing correctly
+
 void TryLoadFont(sf::Font& font, std::string path);
 void selectionsort(int n, int arr[]);
+//Swap funtion//
 void swap(int* xp, int* yp)
 {
     int temp = *xp;
     *xp = *yp;
     *yp = temp;
 }
-
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Selection-Sort");
     sf::Event e;
-    ///////////Font & Text///////////////////////
+    //Font//
     sf::Font font;
     TryLoadFont(font, "8bitfont.ttf");
-    sf::Text text1("", font, 22);
+    //Original Array//
+    sf::Text text1("Original Array: ", font, 22);
     text1.setFillColor(sf::Color::Red);
-    text1.setPosition(sf::Vector2f(450, 295));
-    ///////Swap minimum with current////////////
+    text1.setPosition(sf::Vector2f(119, 150));
+    //Sorted Array//
+    sf::Text text2("Sorted Array: ", font, 22);
+    text2.setFillColor(sf::Color::Red);
+    text2.setPosition(sf::Vector2f(119, 400));
+    //Make the orginal and sorted arrays//
     srand(time(0));
-    int arr[25];
+    int orgarr[25];
     for (int i = 0; i < 25; i++)
     {
-        arr[i] = rand() % 25 + 1;
+        orgarr[i] = rand() % 25 + 1;
     }
-    std::cout << "Original Array: ";
+    int sortarr[25];
     for (int i = 0; i < 25; i++)
     {
-        std::cout << arr[i] << " " << std::endl;
+        sortarr[i] = orgarr[i];
     }
-    selectionsort(arr[], 25);
-    std::cout << "Sorted array: ";
-    for (int i = 0; i < 25; i++) {
-        std::cout << arr[i] << " " << std::endl;
+    //Sort//
+    selectionsort(25, sortarr);
+    //Print the numbers on screen//
+    std::string originalArray;
+    for (int i = 0; i < 25; i++)
+    {
+        originalArray += std::to_string(orgarr[i]) + " ";
     }
+    std::string sortedArray;
+    for (int i = 0; i < 25; i++)
+    {
+        sortedArray += std::to_string(sortarr[i]) + " ";
+    }
+    //Original Array Text//
+    sf::Text originalArrayText(originalArray, font, 22);
+    originalArrayText.setFillColor(sf::Color::White);
+    originalArrayText.setPosition(sf::Vector2f(119, 180));
 
+    //Sorted Array Text//
+    sf::Text sortedArrayText(sortedArray, font, 22);
+    sortedArrayText.setFillColor(sf::Color::White);
+    sortedArrayText.setPosition(sf::Vector2f(119, 430));
+    //Window is open//
     while (window.isOpen())
     {
         while (window.pollEvent(e))
@@ -60,6 +82,9 @@ int main()
 
         // --------- draw on the screen ---------
         window.draw(text1);
+        window.draw(text2);
+        window.draw(sortedArrayText);
+        window.draw(originalArrayText);
 
         // --------- display on the screen --------
         window.display();
@@ -83,17 +108,18 @@ void selectionsort(int n, int arr[])
     int i, a, minindex;
     for (i = 0; i < n - 1; i++)
     {
-        int minindex = i;
+        minindex = i;
         for (a = i + 1; a < n; a++)
         {
             if (arr[a] < arr[minindex])
             {
-                arr[minindex] = arr[a];
+                minindex = a;
             }
         }
         if (minindex != i)
         {
-            swap(&arr[minindex], &arr[a]);
+            swap(&arr[minindex], &arr[i]);
         }
     }
 }
+
