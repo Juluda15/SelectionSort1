@@ -23,20 +23,38 @@ int main()
     //Font//
     sf::Font font;
     TryLoadFont(font, "8bitfont.ttf");
+    //Line between original and sorted//
+    sf::RectangleShape line;
+    const float heightline = 10.00f;
+    const float widthline = 1000.00f;
+    line = sf::RectangleShape(sf::Vector2f(widthline, heightline));
+    line.setPosition(0, 300.01);
+    line.setFillColor(sf::Color::Red);
     //Original Array//
     sf::Text text1("Original Array: ", font, 22);
     text1.setFillColor(sf::Color::Red);
-    text1.setPosition(sf::Vector2f(119, 150));
+    text1.setPosition(sf::Vector2f(0, 5)); 
     //Sorted Array//
     sf::Text text2("Sorted Array: ", font, 22);
     text2.setFillColor(sf::Color::Red);
-    text2.setPosition(sf::Vector2f(119, 400));
+    text2.setPosition(sf::Vector2f(0, 316));
     //Make the orginal and sorted arrays//
     srand(time(0));
     int orgarr[25];
     for (int i = 0; i < 25; i++)
     {
         orgarr[i] = rand() % 25 + 1;
+    }
+    //Create rectangles for original//
+    sf::RectangleShape orectangles[25];
+    const float columnwidth = 1000.00f / 25.00f;
+    const float columnheight = 250;
+    for (int i = 0; i < 25; i++)
+    {
+        float height = orgarr[i] / 25.00f * columnheight;
+        orectangles[i] = sf::RectangleShape(sf::Vector2f(columnwidth, -height));
+        orectangles[i].setPosition(i * columnwidth, 300);
+        orectangles[i].setFillColor(sf::Color::White);
     }
     int sortarr[25];
     for (int i = 0; i < 25; i++)
@@ -56,15 +74,6 @@ int main()
     {
         sortedArray += std::to_string(sortarr[i]) + " ";
     }
-    //Original Array Text//
-    sf::Text originalArrayText(originalArray, font, 22);
-    originalArrayText.setFillColor(sf::Color::White);
-    originalArrayText.setPosition(sf::Vector2f(119, 180));
-
-    //Sorted Array Text//
-    sf::Text sortedArrayText(sortedArray, font, 22);
-    sortedArrayText.setFillColor(sf::Color::White);
-    sortedArrayText.setPosition(sf::Vector2f(119, 430));
     //Window is open//
     while (window.isOpen())
     {
@@ -83,8 +92,11 @@ int main()
         // --------- draw on the screen ---------
         window.draw(text1);
         window.draw(text2);
-        window.draw(sortedArrayText);
-        window.draw(originalArrayText);
+        for(int i = 0; i < 25; i++)
+        {
+            window.draw(orectangles[i]);
+        }
+        window.draw(line);
 
         // --------- display on the screen --------
         window.display();
