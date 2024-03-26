@@ -38,7 +38,7 @@ int main()
     sf::Text text2("Sorted Array: ", font, 22);
     text2.setFillColor(sf::Color::Red);
     text2.setPosition(sf::Vector2f(0, 316));
-    //Make the orginal and sorted arrays//
+    //Make the orginal array//
     srand(time(0));
     int orgarr[25];
     for (int i = 0; i < 25; i++)
@@ -47,33 +47,35 @@ int main()
     }
     //Create rectangles for original//
     sf::RectangleShape orectangles[25];
-    const float columnwidth = 1000.00f / 25.00f;
-    const float columnheight = 250;
+    const float ocolumnwidth = 1000.00f / 25.00f;
+    const float ocolumnheight = 250;
     for (int i = 0; i < 25; i++)
     {
-        float height = orgarr[i] / 25.00f * columnheight;
-        orectangles[i] = sf::RectangleShape(sf::Vector2f(columnwidth, -height));
-        orectangles[i].setPosition(i * columnwidth, 300);
+        float height1 = orgarr[i] / 25.00f * ocolumnheight;
+        orectangles[i] = sf::RectangleShape(sf::Vector2f(ocolumnwidth, -height1));
+        orectangles[i].setPosition(i * ocolumnwidth, 300);
         orectangles[i].setFillColor(sf::Color::White);
     }
+    //Make the sorted array//
     int sortarr[25];
     for (int i = 0; i < 25; i++)
     {
         sortarr[i] = orgarr[i];
     }
+    selectionsort(25, sortarr);
+    //Create rectangles for sorted//
+    sf::RectangleShape srectangles[25];
+    const float scolumnwidth = 1000.00f / 25.00f;
+    const float scolumnheight = 250.00f;
+    for (int i = 0; i < 25; i++)
+    {
+        float height2 = sortarr[i] / 25.00f * scolumnheight;
+        srectangles[i] = sf::RectangleShape(sf::Vector2f(scolumnwidth, -height2));
+        srectangles[i].setPosition(i * scolumnwidth, 600);
+        srectangles[i].setFillColor(sf::Color::White);
+    }
     //Sort//
     selectionsort(25, sortarr);
-    //Print the numbers on screen//
-    std::string originalArray;
-    for (int i = 0; i < 25; i++)
-    {
-        originalArray += std::to_string(orgarr[i]) + " ";
-    }
-    std::string sortedArray;
-    for (int i = 0; i < 25; i++)
-    {
-        sortedArray += std::to_string(sortarr[i]) + " ";
-    }
     //Window is open//
     while (window.isOpen())
     {
@@ -92,11 +94,15 @@ int main()
         // --------- draw on the screen ---------
         window.draw(text1);
         window.draw(text2);
+        window.draw(line);
         for(int i = 0; i < 25; i++)
         {
             window.draw(orectangles[i]);
         }
-        window.draw(line);
+        for (int i = 0; i < 25; i++)
+        {
+            window.draw(srectangles[i]);
+        }
 
         // --------- display on the screen --------
         window.display();
