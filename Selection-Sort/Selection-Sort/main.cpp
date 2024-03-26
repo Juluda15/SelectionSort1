@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include "SFML/Graphics.hpp"
+#include <SFML/Audio.hpp>
 
 void TryLoadFont(sf::Font& font, std::string path);
 void selectionsortSP(int n, int arr[], int step);
@@ -54,6 +55,8 @@ int main()
         float height1 = orgarr[i] / 25.00f * ocolumnheight;
         orectangles[i] = sf::RectangleShape(sf::Vector2f(ocolumnwidth, -height1));
         orectangles[i].setPosition(i * ocolumnwidth, 300);
+        orectangles[i].setOutlineThickness(2.00f);
+        orectangles[i].setOutlineColor(sf::Color::Red);
         orectangles[i].setFillColor(sf::Color::White);
     }
     //Make the sorted array//
@@ -82,6 +85,8 @@ int main()
         window.draw(text1);
         window.draw(text2);
         window.draw(line);
+        window.draw(sortedArrayText);
+        window.draw(originalArrayText);
         for(int i = 0; i < 25; i++)
         {
             window.draw(orectangles[i]);
@@ -102,8 +107,11 @@ int main()
             float height2 = sortarr[i] / 25.00f * scolumnheight;
             srectangles[i] = sf::RectangleShape(sf::Vector2f(scolumnwidth, -height2));
             srectangles[i].setPosition(i * scolumnwidth, 600);
+            srectangles[i].setOutlineThickness(2.00f);
+            srectangles[i].setOutlineColor(sf::Color::Red);
             srectangles[i].setFillColor(sf::Color::White);
             window.draw(srectangles[i]);
+            
         }
         // --------- display on the screen --------
         window.display();
