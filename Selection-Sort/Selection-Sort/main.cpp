@@ -8,7 +8,7 @@
 #include "SFML/Graphics.hpp"
 
 void TryLoadFont(sf::Font& font, std::string path);
-void selectionsort(int n, int arr[]);
+void selectionsortSP(int n, int arr[], int step);
 //Swap funtion//
 void swap(int* xp, int* yp)
 {
@@ -62,20 +62,7 @@ int main()
     {
         sortarr[i] = orgarr[i];
     }
-    selectionsort(25, sortarr);
-    //Create rectangles for sorted//
-    sf::RectangleShape srectangles[25];
-    const float scolumnwidth = 1000.00f / 25.00f;
-    const float scolumnheight = 250.00f;
-    for (int i = 0; i < 25; i++)
-    {
-        float height2 = sortarr[i] / 25.00f * scolumnheight;
-        srectangles[i] = sf::RectangleShape(sf::Vector2f(scolumnwidth, -height2));
-        srectangles[i].setPosition(i * scolumnwidth, 600);
-        srectangles[i].setFillColor(sf::Color::White);
-    }
-    //Sort//
-    selectionsort(25, sortarr);
+    int step = 0;
     //Window is open//
     while (window.isOpen())
     {
@@ -99,11 +86,25 @@ int main()
         {
             window.draw(orectangles[i]);
         }
+        //Make the sort visible//
+        if (step < 24)
+        {
+            selectionsortSP(25, sortarr, step);
+            step++;
+            sf::sleep(sf::milliseconds(200));
+        }
+        //Create rectangles for sorted//
+        sf::RectangleShape srectangles[25];
+        const float scolumnwidth = 1000.00f / 25.00f;
+        const float scolumnheight = 250.00f;
         for (int i = 0; i < 25; i++)
         {
+            float height2 = sortarr[i] / 25.00f * scolumnheight;
+            srectangles[i] = sf::RectangleShape(sf::Vector2f(scolumnwidth, -height2));
+            srectangles[i].setPosition(i * scolumnwidth, 600);
+            srectangles[i].setFillColor(sf::Color::White);
             window.draw(srectangles[i]);
         }
-
         // --------- display on the screen --------
         window.display();
 
@@ -121,23 +122,20 @@ void TryLoadFont(sf::Font& font, std::string path)
     }
 }
 
-void selectionsort(int n, int arr[])
+void selectionsortSP(int n, int arr[], int step)
 {
-    int i, a, minindex;
-    for (i = 0; i < n - 1; i++)
+    int a, minindex;
+    minindex = step;
+    for (a = step + 1; a < n; a++)
     {
-        minindex = i;
-        for (a = i + 1; a < n; a++)
+        if (arr[a] < arr[minindex])
         {
-            if (arr[a] < arr[minindex])
-            {
-                minindex = a;
-            }
+            minindex = a;
         }
-        if (minindex != i)
-        {
-            swap(&arr[minindex], &arr[i]);
-        }
+    }
+    if (minindex != step)
+    {
+        swap(&arr[minindex], &arr[step]);
     }
 }
 
