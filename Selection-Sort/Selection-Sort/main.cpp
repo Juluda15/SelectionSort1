@@ -85,8 +85,6 @@ int main()
         window.draw(text1);
         window.draw(text2);
         window.draw(line);
-        window.draw(sortedArrayText);
-        window.draw(originalArrayText);
         for(int i = 0; i < 25; i++)
         {
             window.draw(orectangles[i]);
